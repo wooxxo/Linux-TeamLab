@@ -27,8 +27,6 @@ find ~/logs -type f -mtime +30 -exec mv {} ~/archive/ \;
 tar -czf ~/archive/old_logs_2026.tar.gz ~/archive/*.log --remove-files
 ```
 
----
-
 ### 1-3. 문제 발생 지점
 
 평문 로그는 **파일의 mtime** 기준으로만 판단하기 때문에 `touch` 로 조작되거나 파일 하나에 여러 날짜 로그가 섞여 있으면 정확하지 않다.
@@ -59,8 +57,6 @@ jq 'select(.timestamp < "2026-02-17")' ~/access.json > ~/archive/old_access.json
 
 - `lab2/logs/app_recent.log`에서 각각 로그 레벨의 개수를 `awk`를 활용해 센다.
 - `lab2/logs/access.json`에서 각각 로그 레벨의 개수를 `jq`를 활용해 센다.
-
----
 
 ### 2-2. 실습 검증
 
@@ -119,7 +115,6 @@ print "" \
 
 ![문제3풀이](Images\문제3-풀이.png)
 
----
 
 ### 2-3. 문제 발생 지점
 
@@ -149,8 +144,6 @@ jq -n 'reduce inputs.level as $lvl ({}; .[$lvl] += 1)' access.json
 
 
 
----
-
 ## 3. 블랙리스트 만들기
 ### 1-1. 실습 요구사항
 **시나리오**
@@ -177,8 +170,6 @@ jq -n 'reduce inputs.level as $lvl ({}; .[$lvl] += 1)' access.json
 **Q2.** 유저명 / 실패횟수 / 마지막시도시간 / IP를 추출하여 `result.csv` 로 저장하라
 
 **Q3.** `result.csv` 에서 실패 10회 이상인 유저와 IP를 `blacklist.txt` 로 추출하라
-
----
 
 ### 3-2. 실습 검증
 
@@ -224,8 +215,8 @@ hacker01 45.33.32.156
 hacker02 185.220.101.5
 ```
 
-## 문제 4. 로그 포맷 변환
-## 1-1. 실습 요구사항
+## 4. 로그 포맷 변환
+### 4-1. 실습 요구사항
 `access_2024-01-10.log` 또는 `access_2026-01-10.log` 파일의 각 로그 행을 사람이 읽기 쉬운 형식으로 변형하여 출력한다.
 
 - 대상 파일: `access_2024-01-10.log`, `access_2026-01-10.log`
@@ -241,7 +232,7 @@ hacker02 185.220.101.5
 [시간] IP → METHOD URL (상태코드, 응답시간s)
 ```
 
-## 1-2. 실습 검증
+### 4-2. 실습 검증
 ```bash
 awk '{
     time = substr($4,2) " " substr($5,1,length($5)-1)
@@ -254,7 +245,7 @@ awk '{
 }' access_2024-01-10.log
 ```
 
-### b. 실행 결과
+#### b. 실행 결과
 ![문제4풀이jq](Images\problem4.png)
 
 
@@ -352,4 +343,5 @@ sudo find lab2/logs/ -type f -perm -o+w -exec chmod o-w {} \;
 
 `-perm -o+w`에서 `-`는 "해당 비트가 포함된" 것을 의미한다.
 other 쓰기 비트가 켜져 있는 파일만 찾아서 `chmod o-w`로 해당 비트만 제거한다.
+
 <img width="652" height="127" alt="image" src="https://github.com/user-attachments/assets/5bdcfc95-41eb-4a36-8901-8e22886d9652" />
