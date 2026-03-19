@@ -148,9 +148,6 @@ jq -n 'reduce inputs.level as $lvl ({}; .[$lvl] += 1)' access.json
 
 
 
-## 문제5. 권한 관련 문제 (유저 별 권한 설정 맞추기)
-
-> "신입 개발자 그룹에게는 특정 프로젝트 디렉토리만 읽기 권한을 주고, 로그 파일은 수정하지 못하게 설정하기"
 
 ---
 
@@ -262,7 +259,7 @@ awk '{
 
 
 ## 5. 신입의 권한
-### 5-1. 실습 요구사항 (시나리오)
+### 5-1. 실습 요구사항
 
 당신은 시스템 관리자(`root`)입니다.
 개발 서버에는 `root`와 `ubuntu` 두 계정만 존재합니다.
@@ -355,3 +352,4 @@ sudo find lab2/logs/ -type f -perm -o+w -exec chmod o-w {} \;
 
 `-perm -o+w`에서 `-`는 "해당 비트가 포함된" 것을 의미한다.
 other 쓰기 비트가 켜져 있는 파일만 찾아서 `chmod o-w`로 해당 비트만 제거한다.
+<img width="652" height="127" alt="image" src="https://github.com/user-attachments/assets/5bdcfc95-41eb-4a36-8901-8e22886d9652" />
