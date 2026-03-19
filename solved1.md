@@ -227,6 +227,40 @@ hacker01 45.33.32.156
 hacker02 185.220.101.5
 ```
 
+## 문제 4. 로그 포맷 변환
+## 1-1. 실습 요구사항
+`access_2024-01-10.log` 또는 `access_2026-01-10.log` 파일의 각 로그 행을 사람이 읽기 쉬운 형식으로 변형하여 출력한다.
+
+- 대상 파일: `access_2024-01-10.log`, `access_2026-01-10.log`
+- 사용 도구: `awk`
+- 요구 조건:
+  - 각 로그 행에서 시간, IP, METHOD, URL, 상태코드, 응답시간만 추출할 것
+  - 큰따옴표(`"`)와 대괄호(`[]`)를 보기 좋게 정리할 것
+  - 원본 로그 파일은 수정하지 않을 것
+  - 결과는 표준 출력으로 확인할 것
+
+출력 형식:
+```text
+[시간] IP → METHOD URL (상태코드, 응답시간s)
+```
+
+## 1-2. 실습 검증
+```bash
+awk '{
+    time = substr($4,2) " " substr($5,1,length($5)-1)
+    method = substr($6,2)
+    url = $7
+    status = $9
+    response = $11
+
+    printf "[%s] %s → %s %s (%s, %ss)\n", time, $1, method, url, status, response
+}' access_2024-01-10.log
+```
+
+### b. 실행 결과
+![문제4풀이jq](Images\problem4.png)
+
+
 ## 5. 신입의 권한
 ### 5-1. 실습 요구사항 (시나리오)
 
