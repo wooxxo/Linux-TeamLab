@@ -9,7 +9,7 @@
 ## 🛠️ 실습 환경 설정
 ### 1. 📁 로그 디렉토리 구조
     
-    lab2/
+    lab1/
     ├── logs/
     │   ├── project-a/
     │   │   └── app.log
@@ -26,6 +26,21 @@
     │   ├── webserver_login.log
     │   └── admin_audit.log
     └── archive/              ← 비어있음 (문제 2 이동 목적지)
+
+
+```
+lab2/
+├── logs/
+│   ├── project-a/
+│   │   └── app.log
+│   ├── project-b/
+│   │   └── app.log
+│   ├── access.json
+│   ├── app_recent.log
+│   ├── webserver_login.log
+│   └── admin_audit.log
+└── archive/              ← 비어있음 (문제 2 이동 목적지)
+```
 
 ### 2. 📁 파일 목록 및 역할
 **1. access_*.log**
