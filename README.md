@@ -1,12 +1,12 @@
 # Linux-TeamLab
 
-## 👩🏻‍💻 About Team Members
+## 👩🏻‍💻 Team DEV6
 
 | <img src="https://github.com/Federico-15.png" width="120"/> |<img src="https://github.com/wooxxo.png" width="120"/> | <img src="https://github.com/HiLeeS.png" width="120"/> | <img src="https://github.com/ygreee0320.png" width="120"/> | <img src="https://github.com/cuterrabbit.png" width="120"/> | <img src="https://github.com/Zaixian5.png" width="120"/> | 
 |:--:|:--:|:--:|:--:|:--:|:--:|
 | [**류승환**](https://github.com/Federico-15) | [**우승연**](https://github.com/wooxxo) | [**이승준**](https://github.com/HiLeeS) | [**양규리**](https://github.com/ygreee0320) | [**이동욱**](https://github.com/Soooonnn) | [**사재헌**](https://github.com/Zaixian5) |
 
-## 🛠️ 실습 환경 세팅
+## 🛠️ 실습 환경 설정
 ### 1. 📁 로그 디렉토리 구조
     
     lab2/
@@ -38,7 +38,7 @@
 > 대부분의 실습 문제에 사용 가능
 
 
- **2. webserver_log.log**
+ **2. webserver_login.log**
 * 로그인·인증 관련 로그  
 
 * **포함 정보 :** `IP` `유저명` `시간` `METHOD` `URL` `상태코드`
@@ -70,16 +70,9 @@
 
 > 장애 분석, 에러 패턴 탐지, 레벨별 필터링 문제용
 
+## ✅ 학습 내용 기반 문제
 
-### 
 
-## 학습 내용 기반 문제 생성 및 풀이
 
-### Q1
-### Q2
-### Q3
-### Q4
-### Q5
-
-## JSON/YAML 기반 문제 생성 및 풀이
+## ✅ JSON/YAML 기반 문제
 
