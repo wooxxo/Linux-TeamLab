@@ -1,11 +1,10 @@
-# Linux-TeamLab
+# 🐧 Linux 환경에서의 로그 분석 실습
 
-## 👩🏻‍💻 Team DEV6
+## 👩🏻‍💻 About Team DEV6
 
-| <img src="https://github.com/Federico-15.png" width="120"/> |<img src="https://github.com/wooxxo.png" width="120"/> | <img src="https://github.com/HiLeeS.png" width="120"/> | <img src="https://github.com/ygreee0320.png" width="120"/> | <img src="https://github.com/cuterrabbit.png" width="120"/> | <img src="https://github.com/Zaixian5.png" width="120"/> | 
+| <img src="https://github.com/Federico-15.png" width="120"/> | <img src="https://github.com/wooxxo.png" width="120"/> | <img src="https://github.com/HiLeeS.png" width="120"/> | <img src="https://github.com/ygreee0320.png" width="120"/> | <img src="https://github.com/cuterrabbit.png" width="120"/> | <img src="https://github.com/Zaixian5.png" width="120"/> |
 |:--:|:--:|:--:|:--:|:--:|:--:|
 | [**류승환**](https://github.com/Federico-15) | [**우승연**](https://github.com/wooxxo) | [**이승준**](https://github.com/HiLeeS) | [**양규리**](https://github.com/ygreee0320) | [**이동욱**](https://github.com/Soooonnn) | [**사재헌**](https://github.com/Zaixian5) |
-
 
 ## 🎯 프로젝트 목적
 
@@ -18,27 +17,27 @@
 ---
 
 ## 🛠️ 실습 환경 설정
+
 ### 1. 📁 로그 디렉토리 구조
-    
-    lab1/
-    ├── logs/
-    │   ├── project-a/
-    │   │   └── app.log
-    │   ├── project-b/
-    │   │   └── app.log
-    │   ├── access_2026-01-10.log
-    │   ├── access_2026-01-25.log
-    │   ├── access_2026-02-14.log
-    │   ├── access_2026-02-17.log
-    │   ├── access_2026-03-05.log
-    │   ├── access_2026-03-15.log
-    │   ├── access_2026-03-19.log
-    │   ├── app_recent.log
-    │   ├── webserver_login.log
-    │   └── admin_audit.log
-    └── archive/              ← 비어있음 (문제 2 이동 목적지)
-
-
+```
+lab1/
+├── logs/
+│   ├── project-a/
+│   │   └── app.log
+│   ├── project-b/
+│   │   └── app.log
+│   ├── access_2026-01-10.log
+│   ├── access_2026-01-25.log
+│   ├── access_2026-02-14.log
+│   ├── access_2026-02-17.log
+│   ├── access_2026-03-05.log
+│   ├── access_2026-03-15.log
+│   ├── access_2026-03-19.log
+│   ├── app_recent.log
+│   ├── webserver_login.log
+│   └── admin_audit.log
+└── archive/              ← 비어있음 (문제 2 이동 목적지)
+```
 ```
 lab2/
 ├── logs/
@@ -53,64 +52,71 @@ lab2/
 ```
 
 ### 2. 📁 파일 목록 및 역할
-**1. access_*.log**
-* 웹 요청 로그 (핵심 데이터)  
 
+**1. access_*.log**
+* 웹 요청 로그 (핵심 데이터)
 * **포함 정보 :** `IP` `시간` `METHOD` `URL` `상태코드` `응답시간`
-    ```
+```
     45.33.32.156 - - [10/Jan/2024:02:31:05 +0900] "DELETE /index.html HTTP/1.1" 200 37897 1.584 "https://example.com" "python-requests/2.28.0"
-    ```
+```
 > 대부분의 실습 문제에 사용 가능
 
-
- **2. webserver_login.log**
-* 로그인·인증 관련 로그  
-
+**2. webserver_login.log**
+* 로그인·인증 관련 로그
 * **포함 정보 :** `IP` `유저명` `시간` `METHOD` `URL` `상태코드`
-    ```
+```
     185.220.101.5 - hacker02 [28/Mar/2024:01:22:11 +0900] "POST /api/login HTTP/1.1" 401 1285 0.968 "https://google.com" "-"
-    ```
-
+```
 > 특정 IP / 유저의 로그인 실패 패턴 분석, blacklist 생성 문제에 최적
 
 **3. admin_audit.log**
-* 관리자 행동 감사 로그  
-
+* 관리자 행동 감사 로그
 * **포함 정보 :** `USER` `ACTION` `TARGET` `STATUS` `DURATION`
-    ```
+```
     [2024-03-28 01:08:13] USER=alice ACTION=SEARCH TARGET=/api/users STATUS=DENIED DURATION=122ms
-    ```
-
+```
 > 권한 분석, 정상 vs 비정상 행동 탐지 문제용
 
-
 **4. app_recent.log / app.log**
-* 시스템 내부 로그  
-
+* 시스템 내부 로그
 * **포함 정보 :** `날짜시간` `LEVEL(ERROR/WARN/INFO/DEBUG)` `모듈` `메시지`
-    ```
+```
     [2024-03-28 10:36:33] [ERROR] [scheduler] Database connection failed: timeout after 30s
     [2024-03-28 04:21:46] [WARN]  [scheduler] Disk usage at 80%
-    ```
-
+```
 > 장애 분석, 에러 패턴 탐지, 레벨별 필터링 문제용
 
-## ✅ [학습 내용 기반 문제](/solved1.md)
+---
 
-### 1. 로그 아카이빙
-### 2. 로그 레벨
-### 3. 블랙리스트 만들기
-### 4. awk 기반 로그 포맷 변환
-### 5. 신입의 권한
+## ✅ 학습 내용 기반 로그 분석 실습
 
+#### 실습 목표
+수업시간에 학습한 것을 바탕으로 시나리오를 구성하여 다량의 로그 데이터 분석하기
 
-## ✅ [JSON/YAML 기반 문제](/solved2.md)
+[→ solved1.md 바로가기](./solved1.md)
 
-### 1. 로그 아카이빙
-### 2. 로그 레벨
-### 3. 병목 탐지
-### 4. 활성 규칙 식별
-### 5. 특정 규칙 동적 수정
+1. 로그 아카이빙  
+
+2. 로그 레벨
+3. 블랙리스트 만들기
+4. awk 기반 로그 포맷 변환
+5. 신입의 권한
+
+## ✅ JSON/YAML 기반 로그 분석 실습
+
+[→ solved2.md 바로가기](./solved2.md)
+
+#### 실습 목표
+`awk`/`grep` 기반 처리에서 발생한 한계를 `jq`/`yq`로 해결해보기
+
+1. 로그 아카이빙 : timestamp 기준 레코드 단위 필터링  
+
+2. 로그 레벨 : `reduce`를 활용한 간결한 집계
+3. 병목 탐지 : 응답 시간 기준 API 추출
+4. 활성 규칙 식별 : YAML 배열 필터링
+5. 특정 규칙 동적 수정 : YAML 인플레이스 편집
+
+<br>
 
 ## 🛠️ 기술 스택
 
