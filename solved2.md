@@ -1,11 +1,11 @@
-**문제 2. 타임스탬프 기준으로 30일이 지난 로그파일을 archive 폴더로 옮기기**
+**문제 1. 타임스탬프 기준으로 30일이 지난 로그파일을 archive 폴더로 옮기기**
 
-## 2-1. 실습 요구사항
+## 1-1. 실습 요구사항
 
 - `~/access.json` 에서 timestamp 기준 **2026-02-17 이전 (30일 초과)** 로그만 추출
 - 추출한 로그를 `~/archive/old_access.json` 으로 저장
 
-## 2-2. 실습 검증
+## 1-2. 실습 검증
 
 **해결 명령어:**
 
@@ -13,9 +13,12 @@
 jq 'select(.timestamp < "2026-02-17")' ~/access.json > ~/archive/old_access.json
 ```
 
-**실행 결과:**
 
-![jq 문제 2번 이미지](Images/jq_problem2.png)
+**실행 결과:**
+<img width="952" height="22" alt="image" src="https://github.com/user-attachments/assets/3ed12b84-6066-40e0-afe9-d1ea92c4ef98" />
+
+<img width="518" height="93" alt="image" src="https://github.com/user-attachments/assets/7c48b4ba-11f4-42af-98b6-17289b1747cc" />
+
 
 **해결 과정 상세:**
 
@@ -29,7 +32,7 @@ jq의 파이프라인(`|`)을 통해 timestamp 값 기준으로 레코드를 필
 
 ---
 
-## 2-3. 문제 발생 지점
+## 1-3. 문제 발생 지점
 
 `find -mtime` 은 파일의 수정시간 기준이라 파일 하나에 여러 날짜 로그가 섞여 있으면 정확하지 않다.\
 로그가 JSON 형식으로 정제되어 있다면 `jq` 로 **로그 내용의 timestamp 값** 기준으로 레코드 단위로 정확하게 분리할 수 있다.
