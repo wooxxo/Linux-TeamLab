@@ -6,6 +6,17 @@
 |:--:|:--:|:--:|:--:|:--:|:--:|
 | [**류승환**](https://github.com/Federico-15) | [**우승연**](https://github.com/wooxxo) | [**이승준**](https://github.com/HiLeeS) | [**양규리**](https://github.com/ygreee0320) | [**이동욱**](https://github.com/Soooonnn) | [**사재헌**](https://github.com/Zaixian5) |
 
+
+## 🎯 프로젝트 목적
+
+리눅스 환경에서 실제 서버 운영 시나리오를 기반으로 로그 분석 실습을 진행한다.
+
+- `find`, `grep`, `awk` 등 리눅스 기본 명령어를 활용한 평문 로그 처리 능력 습득
+- `jq`, `yq` 를 활용한 JSON/YAML 구조화 데이터 분석 능력 습득
+- 로그 아카이빙, 장애 분석, 보안 탐지 등 실무에서 자주 마주치는 시나리오를 직접 해결하며 실전 감각 향상
+
+---
+
 ## 🛠️ 실습 환경 설정
 ### 1. 📁 로그 디렉토리 구조
     
