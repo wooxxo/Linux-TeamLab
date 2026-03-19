@@ -1,24 +1,27 @@
-## 1-1. 실습 요구사항 (로그 아카이빙)
+# ✅ 실습 기반 문제
+
+## 1. 로그 아카이빙
+### 1-1. 실습 요구사항
 
 - `~/logs/` 에서 mtime 기준 **30일 이상** 경과한 파일을 검색
 - 대상 파일을 `~/archive/` 로 이동
 - 이동된 파일을 `old_logs_2026.tar.gz` 으로 압축 후 원본 삭제
 
-## 1-2. 실습 검증
+### 1-2. 실습 검증
 
-### a. 이동 대상 확인
+#### a. 이동 대상 확인
 
 ```bash
 find ~/logs -type f -mtime +30
 ```
 
-### b. archive 디렉토리로 이동
+#### b. archive 디렉토리로 이동
 
 ```bash
 find ~/logs -type f -mtime +30 -exec mv {} ~/archive/ \;
 ```
 
-### c. 압축 및 원본 삭제
+#### c. 압축 및 원본 삭제
 
 ```bash
 tar -czf ~/archive/old_logs_2026.tar.gz ~/archive/*.log --remove-files
@@ -26,7 +29,7 @@ tar -czf ~/archive/old_logs_2026.tar.gz ~/archive/*.log --remove-files
 
 ---
 
-## 1-3. 문제 발생 지점
+### 1-3. 문제 발생 지점
 
 평문 로그는 **파일의 mtime** 기준으로만 판단하기 때문에 `touch` 로 조작되거나 파일 하나에 여러 날짜 로그가 섞여 있으면 정확하지 않다.
 
@@ -51,16 +54,17 @@ jq 'select(.timestamp < "2026-02-17")' ~/access.json > ~/archive/old_access.json
 
 ---
 
-## 2-1. 실습 요구사항
+## 2. 로그 레벨
+### 2-1. 실습 요구사항
 
 - `lab2/logs/app_recent.log`에서 각각 로그 레벨의 개수를 `awk`를 활용해 센다.
 - `lab2/logs/access.json`에서 각각 로그 레벨의 개수를 `jq`를 활용해 센다.
 
 ---
 
-## 2-2. 실습 검증
+### 2-2. 실습 검증
 
-### a. awk의 `$<행 번호>` 변수를 활용하는 방법
+#### a. awk의 `$<행 번호>` 변수를 활용하는 방법
 > 로그 파일에서 로그 레벨이 몇 번째 행에 있는지 정확히 알 때 활용하는 방법
 
 ```bash
@@ -85,7 +89,7 @@ print "" \
 }' ~/lab2/logs/app_recent.log
 ```
 
-### b. awk와 정규표현식을 활용한 방법
+#### b. awk와 정규표현식을 활용한 방법
 > 로그 파일에 로그 레벨이 몇 번째 행에 있는지 몰라도 사용 가능한 방법
 
 ```bash
@@ -111,13 +115,13 @@ print "" \
 }' ~/lab2/logs/app_recent.log
 ```
 
-### c. 실습 결과
+#### c. 실습 결과
 
 ![문제3풀이](Images\문제3-풀이.png)
 
 ---
 
-## 2-3. 문제 발생 지점
+### 2-3. 문제 발생 지점
 
 awk로 작성된 스크립트는 불필요하게 양이 많고 복잡하다.\
 로그가 JSON 형식으로 정제되어 있다면 `jq` 스크립트로 더욱 간단하게 로그 레벨 정보를 추출할 수 있다.
@@ -125,7 +129,7 @@ awk로 작성된 스크립트는 불필요하게 양이 많고 복잡하다.\
 ```bash
 jq -n 'reduce inputs.level as $lvl ({}; .[$lvl] += 1)' access.json
 ```
-### a. jq 스크립트 핵심 원리
+#### a. jq 스크립트 핵심 원리
 
 1. **`n` (Null input 옵션)과 `inputs`**
     - `n`: `jq`가 파일을 한 번에 통째로 읽어들이지 않도록 제어
@@ -138,7 +142,7 @@ jq -n 'reduce inputs.level as $lvl ({}; .[$lvl] += 1)' access.json
     - 방금 읽어온 레벨 이름(`$lvl`)을 키(Key)로 삼아 값을 1씩 증가
     - ex: 처음 `WARN`을 만나면 `{"WARN": 1}`이 되고, 다음에 또 `WARN`을 만나면 `{"WARN": 2}`로 누적
 
-### b. 실행 결과
+#### b. 실행 결과
 
 ![문제3풀이jq](Images\문제3jq.png)
 
@@ -150,6 +154,80 @@ jq -n 'reduce inputs.level as $lvl ({}; .[$lvl] += 1)' access.json
 
 ---
 
+## 3. 블랙리스트 만들기
+### 1-1. 실습 요구사항
+**시나리오**
+
+> 당신은 보안팀 신입이다.
+> 팀장이 웹서버 로그(`webserver_log.log`)를 던져주며 말했다.
+>
+> *"최근 서버에 이상한 로그인 시도가 많아. 로그 뒤져서 수상한 놈들 뽑아서 블랙리스트 만들어봐."*
+
+**조건**
+
+| 항목 | 값 |
+|------|----|
+| 사용 파일 | `webserver_log.log` |
+| 최종 결과물 | `result.csv`, `blacklist.txt` |
+| 로그인 요청 | `POST /api/login` |
+| 실패 기준 | 상태코드 `401` |
+| 블랙리스트 기준 | 실패 횟수 `10회 이상` |
+
+**문제**
+
+**Q1.** 로그 파일에서 로그인 실패한 줄만 출력하라
+
+**Q2.** 유저명 / 실패횟수 / 마지막시도시간 / IP를 추출하여 `result.csv` 로 저장하라
+
+**Q3.** `result.csv` 에서 실패 10회 이상인 유저와 IP를 `blacklist.txt` 로 추출하라
+
+---
+
+### 3-2. 실습 검증
+
+**Q1 정답**
+```
+grep "POST /api/login" webserver_log.log | grep " 401 "
+```
+
+**Q2 정답**
+```
+echo "User,실패횟수,마지막시도,IP" > result.csv
+
+grep "POST /api/login" webserver_log.log | grep " 401 " \
+  | tr -d '[' \
+  | awk '{
+      count[$3]++
+      last[$3] = $4
+      if (ips[$3] !~ $1) {
+        if (ips[$3] == "") ips[$3] = $1
+        else ips[$3] = ips[$3] ";" $1
+      }
+    }
+    END {
+      for (user in count)
+        print user","count[user]","last[user]","ips[user]
+    }' >> result.csv
+```
+
+**Q3 정답**
+```
+awk -F',' 'NR>1 && $2 >= 10 {print $1, $4}' result.csv > blacklist.txt
+```
+
+**최종 결과**
+```
+# result.csv
+User,실패횟수,마지막시도,IP
+hacker01,17,28/Mar/2024:22:15:33,45.33.32.156
+hacker02,23,28/Mar/2024:23:51:55,185.220.101.5
+
+# blacklist.txt
+hacker01 45.33.32.156
+hacker02 185.220.101.5
+```
+
+## 5. 신입의 권한
 ### 5-1. 실습 요구사항 (시나리오)
 
 당신은 시스템 관리자(`root`)입니다.
