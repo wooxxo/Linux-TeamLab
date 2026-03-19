@@ -27,21 +27,6 @@
     │   └── admin_audit.log
     └── archive/              ← 비어있음 (문제 2 이동 목적지)
 
-
-```
-lab2/
-├── logs/
-│   ├── project-a/
-│   │   └── app.log
-│   ├── project-b/
-│   │   └── app.log
-│   ├── access.json
-│   ├── app_recent.log
-│   ├── webserver_login.log
-│   └── admin_audit.log
-└── archive/              ← 비어있음 (문제 2 이동 목적지)
-```
-
 ### 2. 📁 파일 목록 및 역할
 **1. access_*.log**
 * 웹 요청 로그 (핵심 데이터)  
@@ -95,6 +80,12 @@ lab2/
 
 
 ## ✅ [JSON/YAML 기반 문제](/solved2.md)
+
+### 1. 
+### 2. 
+### 3. 
+### 4. 
+### 5. 
 
 ## 🛠️ 기술 스택
 
