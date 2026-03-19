@@ -141,3 +141,105 @@ jq -n 'reduce inputs.level as $lvl ({}; .[$lvl] += 1)' access.json
 ### b. 실행 결과
 
 ![문제3풀이jq](Images\문제3jq.png)
+
+
+
+## 문제5. 권한 관련 문제 (유저 별 권한 설정 맞추기)
+
+> "신입 개발자 그룹에게는 특정 프로젝트 디렉토리만 읽기 권한을 주고, 로그 파일은 수정하지 못하게 설정하기"
+
+---
+
+### 5-1. 실습 요구사항 (시나리오)
+
+당신은 시스템 관리자(`root`)입니다.
+개발 서버에는 `root`와 `ubuntu` 두 계정만 존재합니다.
+`ubuntu`는 신입 개발자가 사용하는 일반 계정입니다.
+
+>  **"신입 개발자(ubuntu)가 프로젝트 소스를 수정할 수 있고, 로그 파일까지 편집 가능한 현재 상태"**
+
+#### 계정 현황
+
+| 사용자 | 역할 | 비고 |
+|--------|------|------|
+| `root` | 시스템 관리자 | 모든 권한 보유 |
+| `ubuntu` | 신입 개발자 | 읽기만 허용되어야 함 |
+
+
+#### 조건
+
+**[소유권 & 허가권]**
+
+- `lab2/webserver/` — 소유자 `root`, 소유 그룹 `root`, 권한 `755`
+  - `root`는 읽기/쓰기/실행, `ubuntu`는 읽기+실행만 (쓰기 불가)
+- `lab2/archive/` — SGID를 설정하여 새로 생성되는 파일의 그룹 소유가 자동 유지되도록 한다
+- `lab2/logs/` — 소유자 `root`, 소유 그룹 `root`, 권한 `700`
+  - `root`만 읽기/쓰기/실행, `ubuntu`는 접근 자체가 불가능
+
+**[위험 파일 탐지 — find]**
+
+- `lab2/` 하위에서 권한이 `777`인 파일은 `750`으로, 디렉토리는 `755`로 일괄 수정하는 명령어를 작성한다
+- `lab2/logs/`에서 other에게 쓰기 권한이 있는 파일을 찾아 쓰기 권한을 제거한다
+
+---
+
+### 5-2. 실습 검증
+
+#### 1. 소유권 & 허가권 설정
+
+**lab2/webserver/ — root가 읽기/쓰기, ubuntu는 읽기만**
+
+```bash
+sudo chown -R root:root lab2/webserver
+sudo chmod -R 755 lab2/webserver
+```
+
+`755` = 소유자(root) rwx / 그룹(root) r-x / other(ubuntu) r-x
+→ `ubuntu`는 other에 해당하므로 읽기+실행만 가능, 쓰기 불가
+
+**lab2/archive/ — SGID 설정**
+
+```bash
+sudo chown root:root lab2/archive
+sudo chmod 755 lab2/archive
+sudo chmod g+s lab2/archive
+```
+
+SGID가 없으면 사용자가 파일을 만들 때 그 사용자의 기본 그룹이 소유 그룹이 된다.
+SGID가 있으면 누가 만들든 그룹이 항상 디렉토리의 그룹(root)으로 유지된다.
+
+**lab2/logs/ — root만 접근, ubuntu 완전 차단**
+
+```bash
+sudo chown -R root:root lab2/logs
+sudo chmod -R 700 lab2/logs
+```
+
+`700` = 소유자(root) rwx / 그룹 --- / other(ubuntu) ---
+→ `ubuntu`는 읽기, 쓰기, 실행 모두 불가능. `ls`조차 할 수 없다.
+
+#### 2. 위험 파일 탐지 — find
+
+**777 파일을 750으로 수정**
+
+```bash
+sudo find lab2/ -type f -perm 0777 -exec chmod 750 {} \;
+```
+
+- `-type f`는 일반 파일만, `-perm 0777`은 권한이 정확히 777인 것만 찾는다.
+- `-exec chmod 750 {} \;`는 찾은 파일 하나하나에 `chmod 750`을 실행한다.
+
+**777 디렉토리를 755로 수정**
+
+```bash
+sudo find lab2/ -type d -perm 0777 -exec chmod 755 {} \;
+```
+
+**로그 디렉토리에서 other 쓰기 권한 제거**
+
+```bash
+sudo find lab2/logs/ -type f -perm -o+w -exec chmod o-w {} \;
+```
+
+`-perm -o+w`에서 `-`는 "해당 비트가 포함된" 것을 의미한다.
+other 쓰기 비트가 켜져 있는 파일만 찾아서 `chmod o-w`로 해당 비트만 제거한다.
