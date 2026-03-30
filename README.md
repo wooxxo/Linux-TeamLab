@@ -4,7 +4,7 @@
 
 | <img src="https://github.com/Federico-15.png" width="120"/> | <img src="https://github.com/wooxxo.png" width="120"/> | <img src="https://github.com/HiLeeS.png" width="120"/> | <img src="https://github.com/ygreee0320.png" width="120"/> | <img src="https://github.com/cuterrabbit.png" width="120"/> | <img src="https://github.com/Zaixian5.png" width="120"/> |
 |:--:|:--:|:--:|:--:|:--:|:--:|
-| [**류승환**](https://github.com/Federico-15) | [**우승연**](https://github.com/wooxxo) | [**이승준**](https://github.com/HiLeeS) | [**양규리**](https://github.com/ygreee0320) | [**이동욱**](https://github.com/Soooonnn) | [**사재헌**](https://github.com/Zaixian5) |
+| [**류승환**](https://github.com/Federico-15) | [**우승연**](https://github.com/wooxxo) | [**이승준**](https://github.com/HiLeeS) | [**양규리**](https://github.com/ygreee0320) | [**이동욱**](https://github.com/cuterrabbit) | [**사재헌**](https://github.com/Zaixian5) |
 
 ## 🎯 프로젝트 목적
 
